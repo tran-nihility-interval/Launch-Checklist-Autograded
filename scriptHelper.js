@@ -2,21 +2,24 @@
 
 //require('cross-fetch/polyfill');
 
+
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {//look for key name
     // Here is the HTML formatting for our mission target div.
 
     let testTarget = document.getElementById('missionTarget');
+    let random = Math.round(Math.random() * DestinationInfo.length);
+    let mTarget = DestinationInfo[random];
     testTarget.innerHTML = //utilize backtick on line 15
     `
         <h2>Mission Destination</h2>
         <ol>
-            <li>Name: ${name}</li>
-            <li>Diameter: ${diameter} </li>
-            <li>Star: ${star}</li>
-            <li>Distance from Earth: ${distance}</li>
-            <li>Number of Moons: ${moons} </li>
+            <li>Name: ${mTarget.name}</li>
+            <li>Diameter: ${mTarget.diameter} </li>
+            <li>Star: ${mTarget.star}</li>
+            <li>Distance from Earth: ${mTarget.distance}</li>
+            <li>Number of Moons: ${mTarget.moons} </li>
         </ol>
-        <img src="${imageUrl}">`
+        <img src="${mTarget.imageUrl}">`;
 }
             
  
@@ -76,7 +79,13 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
     let planetsReturned;
  
     planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response) {
+
+    
         return response.json()
+          //  planetsReturned = planetsResponse;
+         //   return response.json()
+       // })
+        
     });
        
     return planetsReturned;
