@@ -1,25 +1,29 @@
 // Write your helper functions here!
 
-//require('cross-fetch/polyfill');
+require('cross-fetch/polyfill');
+//{
+  //  "type"; "module";
+//}
 
 
-function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {//look for key name
-    // Here is the HTML formatting for our mission target div.
 
-    let testTarget = document.getElementById('missionTarget');
-    let random = Math.round(Math.random() * DestinationInfo.length);
-    let mTarget = DestinationInfo[random];
-    testTarget.innerHTML = //utilize backtick on line 15
-    `
+function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+  
+    let testTarget = document.getElementById('missionTarget');//
+  
+    console.log(name);//test to see if the planets pop up in the browser
+    testTarget.innerHTML = `
+    
+    
         <h2>Mission Destination</h2>
         <ol>
-            <li>Name: ${mTarget.name}</li>
-            <li>Diameter: ${mTarget.diameter} </li>
-            <li>Star: ${mTarget.star}</li>
-            <li>Distance from Earth: ${mTarget.distance}</li>
-            <li>Number of Moons: ${mTarget.moons} </li>
+            <li>Name: ${name}</li>
+            <li>Diameter: ${diameter} </li>
+            <li>Star: ${star}</li>
+            <li>Distance from Earth: ${distance}</li>
+            <li>Number of Moons: ${moons} </li>
         </ol>
-        <img src="${mTarget.imageUrl}">`;
+        <img src="${imageUrl}">`;
 }
             
  
@@ -35,15 +39,20 @@ function validateInput(testInput) {//case sensitive
     }
  }
     
- 
+ //make sure it only run when the form is submitted
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {//access it and pass into it from another file
         let pilotStatus = document.getElementById("pilotStatus");
         let copilotStatus = document.getElementById("copilotStatus");
         let fuelStatus = document.getElementById("fuelStatus");
         let cargoStatus = document.getElementById("cargoStatus");
-        if (validateInput(pilot) === "" || validateInput(copilot) === "" || validateInput(fuelLevel) === "" || validateInput(cargoLevel) === "") {
+        list.style.visibility = "visible";
+      
+      
+        if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {//is a number, not a number
             alert("All fields are required!");
-     
+      
+        } else if (validateInput(pilot) === "Is a Number" || validateInput(copilot) === "Is a Number" || validateInput(fuelLevel) === "Not a Number" || validateInput(cargoLevel) === "Not a Number") {//is a number, not a number
+            alert("Invalid Input.  Please enter your input accordingly.");
         } else {
             list.style.visibility = 'visible';//
             pilotStatus.innerHTML  = `Pilot ${pilot} is ready for launch`;
@@ -51,7 +60,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
 
             let launchStatus = document.getElementById("launchStatus");
             if (fuelLevel < 10000){
-               // faultyItems.style.visibility = 'visible';  
+               
                 fuelStatus.innerHTML = "Fuel level too low for launch";
                 launchStatus.innerHTML = "Shuttle Not Ready for Launch";
                 launchStatus.style.color = "red";
@@ -59,19 +68,31 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
                 fuelStatus.innerHTML = "Fuel level high enough for launch";
                 launchStatus.innerHTML = "Shuttle is Ready for Launch";
                 launchStatus.style.color = "green";
+                list.style.visibility = 'visible';//
             }
 
             if (cargoLevel > 10000) {
+          
                 list.style.visibility = 'visible';
                 cargoStatus.innerHTML = "Cargo mass too heavy for launch";
-                launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+             
                 launchStatus.style.color = "red";
             } else {
-                cargoStatus.innerHTML = "Cargo mass low enough for Launch";
-                launchStatus.innerHTML = "Shuttle is Ready for launch";
+                cargoStatus.innerHTML = "Cargo mass low enough for launch";
+            
                 launchStatus.style.color = "green";
             }
-             
+            if(launchStatus === 'ready') {
+                list.style.visibility = 'visible';
+                launchStatus.style.color = 'green';
+                launchStatus.innerHTML = 'Shuttle is Ready for Launch';
+                formSubmission();
+            }else {
+                launchStatus.style.color = 'red';
+                list.style.visibility = 'visible';
+                launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+               
+            }
             }
         }
 
@@ -82,9 +103,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
 
     
         return response.json()
-          //  planetsReturned = planetsResponse;
-         //   return response.json()
-       // })
+         
         
     });
        
